@@ -52,7 +52,7 @@ const handleEmitSubmit = () => {
 </script>
 
 <template>
-  <v-expansion-panels>
+  <v-expansion-panels flat>
     <v-expansion-panel>
       <v-expansion-panel-title>
         <template v-slot:default="{ expanded }">
