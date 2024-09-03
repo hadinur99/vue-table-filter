@@ -10,6 +10,7 @@ import "@mdi/font/css/materialdesignicons.css";
 
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import JsonExcel from "vue-json-excel3";
 
 const vuetify = createVuetify({
   components,
@@ -33,7 +34,7 @@ const vuetify = createVuetify({
 });
 
 const app = createApp(App);
+app.component("downloadExcel", JsonExcel);
 app.component("VueDatePicker", VueDatePicker);
 app.use(vuetify);
 app.mount("#app");
-// createApp(App).use(vuetify).use(vueDatePicker).mount("#app");

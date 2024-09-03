@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^9.0.2",
-    "js2excel": "^1.0.1",
     "vue": "^3.4.37",
+    "vue-json-excel3": "^1.0.29",
     "vuetify": "^3.7.1"
   },
   "devDependencies": {

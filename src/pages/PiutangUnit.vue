@@ -65,70 +65,71 @@ const refreshDataTable = () => {
       </v-col>
       <v-col md="6" class="d-flex ga-2 justify-end">
         <v-btn color="warning" @click="refreshDataTable">Refresh</v-btn>
-        <v-btn class="btn" color="secondary" variant="elevated">Export</v-btn>
+        <v-btn class="btn" color="secondary" variant="elevated"
+          ><download-excel :data="tableData" name="Piutang Unit">
+            Export
+          </download-excel></v-btn
+        >
+
         <v-btn class="btn" color="primary" @click="handlePaidIfChecked"
           >Bayar</v-btn
         >
       </v-col>
     </v-row>
 
-    <v-container fluid>
-      <v-col>
-        <v-data-table
-          :items="tableData"
-          :headers="Headers"
-          v-model="selected"
-          item-value="obligationNumber"
-          show-select
-          :sort-by="[
-            { key: 'obligationNumber' },
-            { key: 'policeNumber' },
-            { key: 'owner' },
-            { key: 'participant' },
-            { key: 'va' },
-            { key: 'priceFormed' },
-            { key: 'adminFee' },
-            { key: 'ppn' },
-            { key: 'total' },
-            { key: 'dateAuction' },
-            { key: 'dueDate' },
-            { key: 'settelmentDate' },
-            { key: 'status' },
-          ]"
+    <v-data-table
+      :items="tableData"
+      :headers="Headers"
+      v-model="selected"
+      item-value="obligationNumber"
+      show-select
+      :sort-by="[
+        { key: 'obligationNumber' },
+        { key: 'policeNumber' },
+        { key: 'owner' },
+        { key: 'participant' },
+        { key: 'va' },
+        { key: 'priceFormed' },
+        { key: 'adminFee' },
+        { key: 'ppn' },
+        { key: 'total' },
+        { key: 'dateAuction' },
+        { key: 'dueDate' },
+        { key: 'settelmentDate' },
+        { key: 'status' },
+      ]"
+    >
+      <template v-slot:item.va="{ item }">
+        {{ item.va || "-" }}
+      </template>
+      <template v-slot:item.settelmentDate="{ item }">
+        {{ item.settelmentDate || "-" }}
+      </template>
+      <template v-slot:item.total="{ item }">
+        {{ currencyFormatter(item.total) }}
+      </template>
+      <template v-slot:item.priceFormed="{ item }">
+        {{ currencyFormatter(item.priceFormed) }}
+      </template>
+      <template v-slot:item.ppn="{ item }">
+        {{ currencyFormatter(item.ppn) }}
+      </template>
+      <template v-slot:item.adminFee="{ item }">
+        {{ currencyFormatter(item.adminFee) }}
+      </template>
+      <template v-slot:item.status="{ item }">
+        <v-chip
+          :color="
+            item.status === 'Konfirmasi Pembayaran'
+              ? 'primary'
+              : item.status === 'Lunas'
+              ? 'success'
+              : 'warning'
+          "
         >
-          <template v-slot:item.va="{ item }">
-            {{ item.va || "-" }}
-          </template>
-          <template v-slot:item.settelmentDate="{ item }">
-            {{ item.settelmentDate || "-" }}
-          </template>
-          <template v-slot:item.total="{ item }">
-            {{ currencyFormatter(item.total) }}
-          </template>
-          <template v-slot:item.priceFormed="{ item }">
-            {{ currencyFormatter(item.priceFormed) }}
-          </template>
-          <template v-slot:item.ppn="{ item }">
-            {{ currencyFormatter(item.ppn) }}
-          </template>
-          <template v-slot:item.adminFee="{ item }">
-            {{ currencyFormatter(item.adminFee) }}
-          </template>
-          <template v-slot:item.status="{ item }">
-            <v-chip
-              :color="
-                item.status === 'Konfirmasi Pembayaran'
-                  ? 'primary'
-                  : item.status === 'Lunas'
-                  ? 'success'
-                  : 'warning'
-              "
-            >
-              {{ item.status }}
-            </v-chip>
-          </template>
-        </v-data-table>
-      </v-col>
-    </v-container>
+          {{ item.status }}
+        </v-chip>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
