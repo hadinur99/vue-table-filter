@@ -4,7 +4,7 @@ import { ref, onMounted } from "vue";
 const searchValue = ref("");
 const startDate = ref(null);
 const endDate = ref(null);
-const date = ref();
+const date = ref([]);
 const selectedColumn = ref("");
 const selectedStatus = ref("");
 const sliderValue = ref([0, 100000000]);
@@ -31,9 +31,6 @@ onMounted(() => {
 const $emit = defineEmits(["handleSubmit"]);
 
 const handleEmitSubmit = () => {
-  //   console.log(searchValue.value);
-  //   console.log(date.value);
-  //   console.log(selectedColumn.value);
   const props = {
     searchTextValue: searchValue.value,
     date: date.value,
@@ -41,12 +38,6 @@ const handleEmitSubmit = () => {
     sliderValue: sliderValue.value,
     status: selectedStatus.value,
   };
-  if (selectedColumn.value === "dateAuction") {
-    props.date = date.value[0].toISOString();
-  } else if (selectedColumn.value === "dueDate") {
-    props.date = date.value[1].toISOString();
-  }
-  console.log(props);
   $emit("handleSubmit", props);
 };
 </script>
@@ -113,7 +104,7 @@ const handleEmitSubmit = () => {
               :step="20000000"
               v-model="sliderValue"
               thumb-label="always"
-              label="Price Range"
+              label="Total Range"
             >
             </v-range-slider>
           </div>

@@ -7,6 +7,7 @@ import Headers from "../constants/headers";
 
 const tableData = ref(data.data.map((item) => ({ ...item, isChecked: false })));
 const selected = ref([]);
+const snackbar = ref(false);
 
 const handlePaidIfChecked = () => {
   if (!selected.value.length) return;
@@ -20,12 +21,13 @@ const handlePaidIfChecked = () => {
 
 const handleSearch = (value) => {
   const { searchTextValue, date, selectedColumn, sliderValue, status } = value;
-  const startDate = new Date(date[0]);
-  const endDate = new Date(date[1]);
+  const startDate = new Date(date[0]).toISOString().split("T")[0];
+  const endDate = new Date(date[1]).toISOString().split("T")[0];
+  const startPrice = sliderValue[0];
+  const endPrice = sliderValue[1];
+  console.log("sliderValue", sliderValue);
 
   const filteredData = data.data.filter((item) => {
-    console.log("searchTextValue", searchTextValue);
-
     const normalizeText = searchTextValue.toLowerCase();
 
     const matchTextValue =
@@ -36,12 +38,28 @@ const handleSearch = (value) => {
 
     const matchStatus = status ? item.status === status : true;
 
-    return matchTextValue && matchStatus;
+    const matchPrice = item.total >= startPrice && item.total <= endPrice;
+
+    let matchDate = true;
+
+    if (selectedColumn === "dateAuction") {
+      const itemDate = item.dateAuction;
+      matchDate = itemDate >= startDate && itemDate <= endDate;
+    } else if (selectedColumn === "dueDate") {
+      const itemDate = item.dueDate;
+      matchDate = itemDate >= startDate && itemDate <= endDate;
+    } else if (selectedColumn === "settelmentDate") {
+      const itemDate = item.settelmentDate;
+      matchDate = itemDate >= startDate && itemDate <= endDate;
+    }
+
+    return matchTextValue && matchStatus && matchDate && matchPrice;
   });
   tableData.value = filteredData.map((item) => ({ ...item, isChecked: false }));
 };
 
 const refreshDataTable = () => {
+  snackbar.value = true;
   selected.value = [];
   tableData.value = data.data.map((item) => ({ ...item, isChecked: false }));
 };
@@ -132,4 +150,13 @@ const refreshDataTable = () => {
       </template>
     </v-data-table>
   </v-container>
+  <!-- Snackbar -->
+  <v-snackbar v-model="snackbar">
+    Table Refreshed
+    <template v-slot:actions>
+      <v-btn color="white" variant="text" @click="snackbar = false">
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
