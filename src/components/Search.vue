@@ -1,13 +1,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
+const DEFAULT_MAX_TOTAL = 200000000;
+const DEFAULT_MIN_TOTAL = 0;
 const searchValue = ref("");
-const startDate = ref(null);
-const endDate = ref(null);
 const date = ref([]);
 const selectedColumn = ref("");
 const selectedStatus = ref("");
-const sliderValue = ref([0, 100000000]);
+const sliderValue = ref([DEFAULT_MIN_TOTAL, DEFAULT_MAX_TOTAL]);
 
 const paymentStatus = [
   { name: "", label: "Semua" },
@@ -24,7 +24,7 @@ const columnTypes = [
 
 onMounted(() => {
   const startDate = new Date();
-  const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+  const endDate = new Date();
   date.value = [startDate, endDate];
 });
 
@@ -99,8 +99,8 @@ const handleEmitSubmit = () => {
 
           <div style="margin-top: 35px">
             <v-range-slider
-              :min="0"
-              :max="200000000"
+              :min="DEFAULT_MIN_TOTAL"
+              :max="DEFAULT_MAX_TOTAL"
               :step="20000000"
               v-model="sliderValue"
               thumb-label="always"

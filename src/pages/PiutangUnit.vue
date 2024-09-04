@@ -1,7 +1,8 @@
 <script setup>
 import { ref, toRaw, watch } from "vue";
 import data from "./../../data.json";
-import { currencyFormatter } from "./../../src/utils/currency-formatter";
+import { currencyFormatter } from "../utils/currency-formatter";
+import { dateFormatter } from "../utils/date-fomatter";
 import Search from "./../components/Search.vue";
 import Headers from "../constants/headers";
 
@@ -121,7 +122,7 @@ const refreshDataTable = () => {
         {{ item.va || "-" }}
       </template>
       <template v-slot:item.settelmentDate="{ item }">
-        {{ item.settelmentDate || "-" }}
+        {{ dateFormatter(item.settelmentDate) }}
       </template>
       <template v-slot:item.total="{ item }">
         {{ currencyFormatter(item.total) }}
@@ -134,6 +135,12 @@ const refreshDataTable = () => {
       </template>
       <template v-slot:item.adminFee="{ item }">
         {{ currencyFormatter(item.adminFee) }}
+      </template>
+      <template v-slot:item.dateAuction="{ item }">
+        {{ dateFormatter(item.dateAuction) }}
+      </template>
+      <template v-slot:item.dueDate="{ item }">
+        {{ dateFormatter(item.dueDate) }}
       </template>
       <template v-slot:item.status="{ item }">
         <v-chip
